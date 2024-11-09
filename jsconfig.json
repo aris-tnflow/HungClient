@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "paths": {
+            "~/*": ["./src/*"],
+            "Admin/*": ["./src/pages/admin/*"],
+            "User/*": ["./src/pages/user/*"],
+            "Public/*": ["./src/pages/public/*"],
+        }
+    }
+}

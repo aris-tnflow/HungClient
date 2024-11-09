@@ -1,0 +1,77 @@
+.files-ui-file-mosaic-main-container {
+  width: 100% !important;
+}
+
+body.dark .files-ui-file-icon,
+body.dark .filesui-file-item-size {
+  background-color: rgba(222, 215, 215, 0.685) !important;
+  color: black !important;
+  fill: black !important;
+}
+
+.ant-tree-node-content-wrapper {
+  display: flex !important;
+}
+
+.files-ui-file-mosaic-main-container
+  .files-ui-file-mosaic-icon-layer-container {
+  width: 100% !important;
+  height: auto !important;
+  padding: 10px;
+  aspect-ratio: 1 / 1;
+}
+
+.files-ui-file-mosaic-main-container .files-ui-file-mosaic-file-name {
+  height: 20px !important;
+}
+
+.file-mosaic-main-layer-header {
+  margin-top: 3px !important;
+  margin-right: 5px !important;
+}
+
+.file-mosaic-main-layer-footer {
+  margin-bottom: 3px !important;
+}
+
+.file-mosaic-footer-left {
+  margin-left: 3px !important;
+}
+
+.file-mosaic-footer-right {
+  gap: 3px !important;
+  margin-right: 3px !important;
+}
+
+.files-ui-file-mosaic-file-name {
+  display: block !important ;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.files-ui-file-item-status-container {
+  margin-bottom: 3px !important;
+}
+
+.treeView {
+  height: calc(100vh - 180px) !important;
+}
+
+.files-ui-tooltip {
+  cursor: pointer !important;
+}
+
+@media screen and (max-width: 480px) {
+  .hidden-title .ant-btn-icon {
+    display: block !important;
+  }
+
+  .hidden-title span {
+    display: none;
+  }
+
+  .treeView {
+    height: 300px !important;
+  }
+}

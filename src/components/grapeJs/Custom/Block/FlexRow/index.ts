@@ -1,0 +1,42 @@
+import type { BlockProperties, Plugin } from "grapesjs";
+import loadBlocks from "./block";
+
+export interface PluginOptions {
+  /**
+   * Use this to extend the default flexbox block.
+   * @default {}
+   */
+  flexboxBlock?: Partial<BlockProperties>;
+
+  /**
+   * Classes prefix.
+   * @default ''
+   */
+  stylePrefix?: string;
+
+  /**
+   * Row label.
+   * @default 'Row'
+   */
+  labelRow?: string;
+
+  /**
+   * Column label.
+   * @default 'Column'
+   */
+  labelColumn?: string;
+}
+
+const plugin: Plugin<PluginOptions> = (editor, opts = {}) => {
+  const options: Required<PluginOptions> = {
+    flexboxBlock: {},
+    stylePrefix: "",
+    labelRow: "Row-Row",
+    labelColumn: "Column-Row",
+    ...opts,
+  };
+
+  loadBlocks(editor, options);
+};
+
+export default plugin;

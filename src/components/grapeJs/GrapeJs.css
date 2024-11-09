@@ -1,0 +1,385 @@
+.ck.ck-toolbar{
+    background: #000000 !important;
+}
+
+.gjs-sm-properties{
+    margin-bottom: 10px !important;
+}
+
+.gjs-cv-canvas {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpFRjNFMzJDM0IyNURFMjExQTQ5Nzg0NDU1RjcxQ0I5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpENjY1RjQ3NzVEQjIxMUUyQjJERTgyREM1RTk4RjcyNSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpENjY1RjQ3NjVEQjIxMUUyQjJERTgyREM1RTk4RjcyNSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkVGM0UzMkMzQjI1REUyMTFBNDk3ODQ0NTVGNzFDQjk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkVGM0UzMkMzQjI1REUyMTFBNDk3ODQ0NTVGNzFDQjk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+pZE7iQAAAL5JREFUeNrs1rGthDAQRdEZRBW0Qf/1UIYREgECyyZBBD5P2uAvPzranb0ZEWtYcz2gZeTnk89He/P1j1LK4x8ys/r+KM99gjoDBAjQp8vzZ35D8aKDjmt+fx2dUHt/lOe+Ym4QIECAAOkgHaSDzA0CBAgQIB2kg3SQuUGAAAECpIN0kA4yQIAAAQKkg3SQDnKDDBAgQIB0kA7SQW6QAQIECJAO0kE6yA0yQIAAAdJBOkgHuUGADBAgQH9sF2AAjn/gJpFLwPMAAAAASUVORK5CYII=');
+}
+
+.gjs-clm-tags{
+    padding-top: 0 !important;
+}
+
+#gjs-clm-up{
+    margin-top: 0 !important;
+}
+
+.gjs-toolbar-items{
+    display: flex !important;
+}
+
+.gjs-mdl-dialog{
+    max-width: 1000px !important;
+    width: 100% !important;
+}
+
+.gjs-resizer-h {
+    border: 3px solid #1677ff!important;
+}
+
+.gjs-toolbar {
+    background-color: #1d1d1db5 !important;
+}
+
+.gjs-com-badge,
+.gjs-com-badge-red,
+.gjs-badge {
+    background-color: #1d1d1db5 !important;
+}
+
+.gjs-cv-canvas .gjs-highlighter,
+.gjs-cv-canvas .gjs-highlighter-sel {
+    outline: 1px solid #000000 !important;
+}
+
+.gjs-frame-wrapper {
+    position: absolute !important;
+    margin-top: 10px !important;
+    height: 97% !important;
+    top: 0 !important;
+}
+
+.gjs-layer.gjs-selected .gjs-layer-item{
+    background-color: #1677ff !important;
+}
+
+.gjs-btn-prim{
+    text-align: center !important;
+}
+
+.change-theme-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+}
+
+.tui-image-editor-container .tui-image-editor-help-menu.top{
+    height: 50px !important;
+}
+
+.tui-image-editor__apply-btn{
+    background-color: #2f2f2f !important;
+    color: #ffffff !important;
+}
+
+.change-theme-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2pt #c5c5c575;
+}
+
+.gjs-block svg {
+    width: 100%;
+}
+
+.gjs-off-prv{
+    font-size: 18px;
+    top: 2%;
+    left: 61%;
+}
+
+video{
+    width: 100% !important;
+}
+
+.gjs-one-bg, 
+.gjs-pn-buttons, 
+.gjs-title,
+.gjs-label,
+.gjs-traits-label,
+.gjs-trt-header,
+.gjs-sm-header
+{
+    color: black !important;
+    background-color: rgb(241, 241, 241) !important;
+}
+
+body.dark .gjs-one-bg, 
+body.dark .gjs-pn-buttons,
+body.dark .gjs-title,
+body.dark .gjs-label,
+body.dark .gjs-traits-label,
+body.dark .gjs-trt-header,
+body.dark .gjs-sm-header
+{
+    color: white !important;
+    background-color: #3f3f3f !important;
+}
+
+.gjs-field input, 
+.gjs-field select, 
+.gjs-field textarea,
+#gjs-sm-add,
+#gjs-cm-title
+{
+    color: black !important;
+    background-color: rgb(221, 221, 221) !important;
+}
+
+
+body.dark .gjs-field input, 
+body.dark .gjs-field select, 
+body.dark .gjs-field textarea,
+body.dark  #gjs-sm-add,
+body.dark  #gjs-cm-title
+{
+    color: white !important;
+    background-color: #292929 !important;
+
+}
+
+.gjs-field-arrow-u {
+    border-bottom: 4px solid rgb(0 0 0 / 70%) !important;
+}
+
+.gjs-field-arrow-d {
+    border-top: 4px solid rgb(0 0 0 / 70%) !important;
+}
+ 
+body.dark .gjs-field-arrow-u {
+    border-bottom: 4px solid rgb(255 255 255 / 70%) !important;
+}
+
+body.dark .gjs-field-arrow-d {
+    border-top: 4px solid rgb(255 255 255 / 70%) !important;
+}
+
+
+
+.gjs-pn-views-container{
+    border-left: red !important;
+}
+
+.gjs-three-bg {
+    background-color: #5aff1fb4  !important;
+}
+
+.gjs-four-color {
+    color: #1677ff !important;
+}
+
+.gjs-four-color-h:hover {
+    color: #1677ff !important;
+}
+
+body.dark .gjs-four-color-h:hover {
+    color: #1677ff !important;
+}
+
+.gjs-dashed *[data-gjs-highlightable]{
+    outline: 1px dashed rgb(81, 81, 81) !important;
+}
+.grapesjs-fonts select {
+    width: 200px !important;
+    background-color: #474747;
+    color: #ffffff;
+    padding: 5px;
+    border: none;
+}
+
+.silex-button{
+    width: 150px !important;
+    display: flex;
+    justify-content: center;
+    color: #1677ff !important
+}
+
+.full-width input{
+    color: rgb(0, 0, 0) !important;
+    font-size: 20px ;
+}
+
+fieldset {
+    display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
+    min-inline-size: min-content;
+    border-width: 2px;
+    border-style: groove;
+    border-color: rgb(192, 192, 192);
+    border-image: initial;
+}
+
+.grapesjs-fonts input,
+.grapesjs-fonts button {
+    background-color: #474747;
+    color: #b9a5a6;
+    padding: 5px;
+    border: none;
+}
+
+.grapesjs-fonts .silex-bar {
+    display: flex;
+}
+
+.grapesjs-fonts .silex-bar>* {
+    margin: 5px;
+}
+
+.silex-list li{
+    font-size: 20px;
+}
+
+.silex-list__item__header, .silex-list__item__body, .silex-list__item__footer{
+    font-size: 14px;
+}
+
+.silex-form__element h2{
+    color: white;
+    font-size: 17px !important;
+}
+
+.silex-list__item__header h4{
+    color: white;
+}
+
+.gjs-radio-item-label{
+    height: 20px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
+footer{
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
+.grapesjs-fonts button {
+    padding: 5px;
+    margin: 5px;
+    padding-top: 8px;
+}
+
+.grapesjs-fonts .silex-list__item__footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.pages-wrp{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.page{
+    display: flex;
+    height: 30px;
+    width: 200px;
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 5px;
+    background-color: #474747;
+}
+
+.page:hover{
+    background-color: #706f6f;
+}
+
+.page.selected {
+    background-color: #706f6f;
+}
+
+.page-close{
+    font-size: 20px !important;
+    color: red !important;
+}
+
+.button-create-page{
+    margin-top: 10px;
+    background-color: #474747;
+    color: #b9a5a6;
+    padding: 5px;
+    border: none;
+}
+
+a.cke_button_on{
+    border: 1px solid #3b97e3 !important;
+}
+.cke_inner{
+    outline: 2px solid #3b97e3 !important;
+}
+
+.icon-dir-row {
+    background: url(https://grapesjs.com/assets/images/demos/flex-dir-row.png) no-repeat center;
+}
+
+.icon-dir-row-rev {
+    background: url(https://grapesjs.com/assets/images/demos/flex-dir-row-rev.png) no-repeat center;
+}
+
+.icon-dir-col {
+    background: url(https://grapesjs.com/assets/images/demos/flex-dir-col.png) no-repeat center;
+}
+
+.icon-dir-col-rev {
+    background: url(https://grapesjs.com/assets/images/demos/flex-dir-col-rev.png) no-repeat center;
+}
+
+.icon-just-start {
+    background: url(https://grapesjs.com/assets/images/demos/flex-just-start.png) no-repeat center;
+}
+
+.icon-just-end {
+    background: url(https://grapesjs.com/assets/images/demos/flex-just-end.png) no-repeat center;
+}
+
+.icon-just-sp-bet {
+    background: url(https://grapesjs.com/assets/images/demos/flex-just-sp-bet.png) no-repeat center;
+}
+
+.icon-just-sp-ar {
+    background: url(https://grapesjs.com/assets/images/demos/flex-just-sp-ar.png) no-repeat center;
+}
+
+.icon-just-sp-cent {
+    background: url(https://grapesjs.com/assets/images/demos/flex-just-sp-cent.png) no-repeat center;
+}
+
+.icon-al-start {
+    background: url(https://grapesjs.com/assets/images/demos/flex-al-start.png) no-repeat center;
+}
+
+.icon-al-end {
+    background: url(https://grapesjs.com/assets/images/demos/flex-al-end.png) no-repeat center;
+}
+
+.icon-al-str {
+    background: url(https://grapesjs.com/assets/images/demos/flex-al-str.png) no-repeat center;
+}
+
+.icon-al-center {
+    background: url(https://grapesjs.com/assets/images/demos/flex-al-center.png) no-repeat center;
+}
+
+.icons-flex {
+    background-size: 40% 75% !important;
+    height: 20px;
+    opacity: 0.9;
+}
+
+.gjs-cv-canvas .gjs-no-touch-actions .gjs-cv-canvas-bg{
+    padding: 50px !important;
+}

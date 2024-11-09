@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+	<style>
+		.is-nav-selected .f-thumbs__slide__button .f-thumbs__slide__img {
+			filter: none;
+			border: 2px solid #ffffff;
+		}
+
+		.f-thumbs__slide__img {
+			filter: grayscale(100%);
+		}
+
+		[data-fancybox="gallery"] {
+			cursor: pointer;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<img  src="https://lipsum.app/id/2/1024x768" data-fancybox="gallery" />
+	<img src="https://lipsum.app/id/3/1024x768" data-fancybox="gallery" />
+	<img src="https://lipsum.app/id/4/1024x768" data-fancybox="gallery" />
+	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
+	<script>
+		Fancybox.bind('[data-fancybox="gallery"]', {
+
+		});    
+	</script>
+</body>
+
+</html>

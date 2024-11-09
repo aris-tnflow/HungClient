@@ -1,0 +1,69 @@
+.video-modal .ant-modal-content {
+  padding: 0;
+}
+
+.p-0-10 {
+  padding: 0 10%;
+}
+
+.card-course .ant-card-body {
+  padding-top: 0.875rem;
+}
+
+.card-image {
+  right: 5px;
+  top: -60px;
+  position: absolute;
+  width: 20%;
+}
+
+@media (max-width: 768px) {
+  .card-image {
+    display: none;
+  }
+  .p-0-10 {
+    padding: 0 4%;
+  }
+}
+
+/* Label Sale */
+.sale {
+  position: relative;
+  display: inline-block;
+  background: #ffc000;
+  color: white;
+  height: 2.5rem;
+  width: 2.5rem;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 2.5rem;
+  margin-left: 10px;
+  transform: rotate(-20deg);
+  animation: beat 1s ease infinite alternate;
+}
+
+.sale:before,
+.sale:after {
+  content: "";
+  position: absolute;
+  background: #ffc000; /* inherit từ background */
+  height: 2.5rem; /* inherit từ height */
+  width: 2.5rem; /* inherit từ width */
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transform: rotate(30deg);
+}
+
+.sale:after {
+  transform: rotate(60deg);
+}
+
+@keyframes beat {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  to {
+    transform: rotate(0deg) scale(1.1);
+  }
+}

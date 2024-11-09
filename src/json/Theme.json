@@ -1,0 +1,11 @@
+{
+    "token": {
+        "colorPrimary": "#ffc000",
+        "colorInfo": "#ffc000"
+    },
+    "components": {
+        "Layout": {
+            "siderBg": "rgb(0,0,0)"
+        }
+    }
+}

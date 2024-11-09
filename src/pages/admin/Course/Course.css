@@ -1,0 +1,17 @@
+:where(.css-dev-only-do-not-override-d2lrxs).ant-tree .ant-tree-switcher{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+:where(.css-dev-only-do-not-override-d2lrxs).ant-tree .ant-tree-treenode{
+    display: flex !important;
+    padding: 0 0 5px 0 !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.editor-grapejs .ant-card-body{
+    padding: 0 !important;
+
+}

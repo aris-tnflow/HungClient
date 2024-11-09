@@ -1,0 +1,41 @@
+.sider-bar-admin {
+  height: 100vh;
+}
+
+.menu-admin .ant-drawer-body {
+  padding: 0 !important;
+}
+
+:where(.css-dev-only-do-not-override-1lc4y5p).ant-menu-inline .ant-menu-item,
+:where(.css-dev-only-do-not-override-1lc4y5p).ant-menu-vertical .ant-menu-item,
+:where(.css-dev-only-do-not-override-1lc4y5p).ant-menu-inline
+  .ant-menu-submenu-title,
+:where(.css-dev-only-do-not-override-1lc4y5p).ant-menu-vertical
+  .ant-menu-submenu-title {
+  margin-inline: 0;
+  margin-block: 2px;
+  padding-top: 3px;
+  width: 100%;
+}
+
+:where(.css-dev-only-do-not-override-17g2vrg).ant-menu-inline-collapsed
+  > .ant-menu-item,
+:where(.css-dev-only-do-not-override-17g2vrg).ant-menu-inline-collapsed
+  > .ant-menu-item-group
+  > .ant-menu-item-group-list
+  > .ant-menu-item,
+:where(.css-dev-only-do-not-override-17g2vrg).ant-menu-inline-collapsed
+  > .ant-menu-item-group
+  > .ant-menu-item-group-list
+  > .ant-menu-submenu
+  > .ant-menu-submenu-title,
+:where(.css-dev-only-do-not-override-17g2vrg).ant-menu-inline-collapsed
+  > .ant-menu-submenu
+  > .ant-menu-submenu-title {
+  padding-inline: calc(49% - 8px - 4px) !important;
+  margin-top: 5px !important;
+}
+
+.ant-drawer-header {
+  height: 55px !important;
+}
