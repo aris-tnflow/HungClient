@@ -1,7 +1,6 @@
-import axios from "axios";
 import { instance } from ".";
 
-const baseURL = "/v1/file-manager";
+const baseURL = "/v2/file-manager";
 
 const allFile = async () => {
     const response = await instance.get(`${baseURL}`)

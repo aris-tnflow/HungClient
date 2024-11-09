@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = "/v1/courser";
+const baseURL = "/v2/courser";
 
 const get = async (body) => {
     const response = await instance.get(`${baseURL}?page=${body?.page || 1}&limit=${body?.limit || 9999}`)

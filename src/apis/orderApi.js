@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = "/v1/order";
+const baseURL = "/v2/order";
 
 const search = async (body) => {
     const { page = 1, limit = 10, ...searchParams } = body || {};

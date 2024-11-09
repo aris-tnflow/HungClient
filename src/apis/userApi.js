@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = "/v1/user";
+const baseURL = "/v2/user";
 
 const search = async (body) => {
     const searchParams = new URLSearchParams(body || {});

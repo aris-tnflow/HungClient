@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = "/v1/role";
+const baseURL = "/v2/role";
 
 const get = async () => {
     const response = await instance.get(`${baseURL}`)

@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = "/v1/email";
+const baseURL = "/v2/email";
 
 const send = async (body) => {
     const response = await instance.post(`${baseURL}/send`, body)

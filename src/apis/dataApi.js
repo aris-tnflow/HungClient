@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = "/v1/data";
+const baseURL = "/v2/data";
 
 const backup = async () => {
     const response = await instance.post(`${baseURL}/backup`)

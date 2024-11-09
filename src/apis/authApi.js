@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = "/v1/auth";
+const baseURL = "/v2/auth";
 
 export const register = async (body) => {
   const response = await instance.post(`${baseURL}/register`, body);

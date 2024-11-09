@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = "/v1/notification";
+const baseURL = "/v2/notification";
 
 const get = async (body) => {
     const response = await instance.get(`${baseURL}?page=${body?.page || 1}&limit=${body?.limit || 10}&type=${body?.type || ''}`)
