@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = '/v1/menu'
+const baseURL = '/v2/menu'
 
 const allMenu = async () => {
     const response = await instance.get(`${baseURL}`)

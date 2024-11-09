@@ -1,6 +1,6 @@
 import { instance } from ".";
 
-const baseURL = '/v1/custom-page'
+const baseURL = '/v2/custom-page'
 
 const getSingleMasonry = async (slug) => {
     const response = await instance.get(`${baseURL}/masonry/${slug}`)

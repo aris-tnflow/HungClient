@@ -608,7 +608,7 @@ const Courses = () => {
           <div className="flex flex-wrap md:flex-nowrap mt-2 gap-2 justify-center">
             <Form.Item className="mb-2" label="Ảnh bìa">
               <FileAntd
-                apiUpload={`${baseURL}/v1/courser/image`}
+                apiUpload={`${baseURL}/v2/courser/image`}
                 name="img"
                 body={formInfo?.getFieldValue("_id")}
                 fileLists={`${formInfo?.getFieldValue("img")}`}
@@ -618,7 +618,7 @@ const Courses = () => {
 
             <Form.Item className="mb-2" label="Ảnh chi tiết">
               <FileAntd
-                apiUpload={`${baseURL}/v1/courser/image`}
+                apiUpload={`${baseURL}/v2/courser/image`}
                 name="imgDetail"
                 body={formInfo.getFieldValue("_id")}
                 fileLists={`${formInfo.getFieldValue("imgDetail")}`}

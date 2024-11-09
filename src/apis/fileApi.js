@@ -1,6 +1,6 @@
 import { instanceFile } from "./indexFile";
 import { instance } from "./index";
-const baseURL = '/v1/file'
+const baseURL = '/v2/file'
 
 const uploadFile = async (body) => {
     const response = await instanceFile.post(`${baseURL}`, body)

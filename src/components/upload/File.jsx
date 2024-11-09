@@ -8,7 +8,7 @@ const FileUpload = ({ folder, id, childId, data, setData }) => {
     <Upload
       name="fileVideo"
       multiple={false}
-      action={`${baseURL}/v1/file/video`}
+      action={`${baseURL}/v2/file/video`}
       data={{ folder: `courses/${folder}` }}
       headers={{
         Authorization: "Bearer " + localStorage.getItem("token"),

@@ -1,5 +1,5 @@
 import { instance } from ".";
-const baseURL = '/v1/pages'
+const baseURL = '/v2/pages'
 
 const search = async (body) => {
     const { page = 1, limit = 10, ...searchParams } = body || {};

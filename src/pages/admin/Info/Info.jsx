@@ -185,7 +185,7 @@ const Website = () => {
                     className="flex flex-col justify-center items-center"
                   >
                     <FileInfo
-                      apiUpload={`${baseURL}/v1/file`}
+                      apiUpload={`${baseURL}/v2/file`}
                       name="img"
                       limit={1}
                       folder={"Info"}
@@ -211,7 +211,7 @@ const Website = () => {
                     className="flex flex-col justify-center items-center"
                   >
                     <FileInfo
-                      apiUpload={`${baseURL}/v1/file`}
+                      apiUpload={`${baseURL}/v2/file`}
                       name="img"
                       limit={1}
                       folder={"Info"}

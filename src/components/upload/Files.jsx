@@ -12,7 +12,7 @@ const FileManagerUpload = ({ api, name, folder, multiple = false }) => {
     <Upload
       name={name}
       multiple={multiple}
-      action={`${baseURL}/v1/file/multi`}
+      action={`${baseURL}/v2/file/multi`}
       data={{ folder: folder }}
       showUploadList={false}
       headers={{
