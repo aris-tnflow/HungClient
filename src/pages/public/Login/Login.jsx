@@ -488,7 +488,7 @@ const Login = () => {
                 <div className="image-layer">
                   <img
                     crossOrigin="anonymous | use-credentials"
-                    src={`${baseURL}/login/full-moon.png`}
+                    src={`/login/full-moon.png`}
                     className="form-image-main fi-2"
                   />
                 </div>

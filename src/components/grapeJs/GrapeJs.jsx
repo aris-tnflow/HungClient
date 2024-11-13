@@ -70,6 +70,7 @@ const Page = ({
           traits: ["alt"],
           attributes: {
             "data-fancybox": "gallery",
+            loading: "lazy",
           },
         },
       },

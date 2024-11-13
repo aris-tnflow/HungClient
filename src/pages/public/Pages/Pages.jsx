@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { groupPageApi } from "~/apis/groupPageApi";
 import { FaChevronRight, FaClock } from "react-icons/fa";
 import { FormatDay, FormatDayTime } from "~/components/table/Format";
+import { getLdJsArticle } from "~/utils/seo";
 
 const useDynamicContent = (page, handleFormSubmit) => {
   useEffect(() => {
@@ -61,7 +62,7 @@ const Html = () => {
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(
-    localStorage.getItem("pageSize") || 10
+    localStorage.getItem("pageSize") || 8
   );
 
   const currentPath = useMemo(() => {
@@ -69,6 +70,10 @@ const Html = () => {
       ? "trang-chu"
       : path?.split("/").pop();
   }, [path]);
+
+  useEffect(() => {
+    setPage(20);
+  }, [pageSize]);
 
   useEffect(() => {
     let mounted = true;
@@ -169,6 +174,7 @@ const Html = () => {
       title={pageTitle}
       description={page?.description || "Chicken War Studio"}
       keywords={page?.keywords || "Chicken War Studio"}
+      ldJson={getLdJsArticle(page, info)}
     >
       {loading && <Spin indicator={1} spinning={true} fullscreen />}
 
@@ -190,89 +196,90 @@ const Html = () => {
       )}
 
       {multiple && !loading && (
-        <section>
-          <div className="container mx-auto !max-md:px-0 xl:px-12">
-            {pages?.newData?.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-md:gap-4 md:gap-6">
-                  {pages.newData.map((post) => (
-                    <article
-                      key={post.slug}
-                      style={{
-                        backgroundColor: darkMode ? "#161616bd" : "#fff",
-                      }}
-                      className="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 focus-within:ring-2"
-                    >
-                      <Link to={`/${post.group.slug}/${post.slug}`}>
-                        <img
-                          src={post.img}
-                          alt={post.description}
-                          className="w-full h-64 object-cover"
-                          loading="lazy" // Lazy loading cho ảnh
-                        />
-                      </Link>
+        <div className="mx-6 mt-[6.5rem] my-5">
+          {pages?.newData?.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-md:gap-4 md:gap-6">
+                {pages.newData.map((post) => (
+                  <article
+                    key={post.slug}
+                    style={{
+                      backgroundColor: darkMode ? "#161616bd" : "#fff",
+                    }}
+                    className="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 focus-within:ring-2"
+                  >
+                    <Link to={`/${post.group.slug}/${post.slug}`}>
+                      <img
+                        src={post.img}
+                        alt={post.description}
+                        className="w-full h-64 object-cover"
+                        loading="lazy"
+                      />
+                    </Link>
 
-                      <div className="p-6">
+                    <div className="p-4">
+                      <Typography.Paragraph
+                        className="text-xl text-ellipsis !mb-1 capitalize text-yellow-500"
+                        suffix="..."
+                        ellipsis={{ rows: 3 }}
+                        onClick={() =>
+                          navigate(`/${post.group.slug}/${post.slug}`)
+                        }
+                      >
+                        {post.title}
+                      </Typography.Paragraph>
+
+                      <Typography.Text className="text-base">
+                        {post.description}
+                      </Typography.Text>
+
+                      <div className="flex items-center justify-between text-sm text-gray-500 mt-2">
+                        <span>{info?.newData?.[0].name}</span>
+                        <span>{FormatDay(post.createdAt)}</span>
+                      </div>
+
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="flex items-center text-sm text-gray-500">
+                          <FaClock className="mr-1" />{" "}
+                          {FormatDayTime(post.createdAt)}
+                        </span>
                         <Typography.Link
-                          className="flex items-center text-2xl mb-1 capitalize"
+                          className="flex items-center"
                           onClick={() =>
                             navigate(`/${post.group.slug}/${post.slug}`)
                           }
                         >
-                          {post.title}
+                          Xem thêm <FaChevronRight className="ml-1" />
                         </Typography.Link>
-                        <Typography.Text className="text-base">
-                          {post.description}
-                        </Typography.Text>
-
-                        <div className="flex items-center justify-between text-sm text-gray-500 mt-2">
-                          <span>{info?.newData?.[0].name}</span>
-                          <span>{FormatDay(post.createdAt)}</span>
-                        </div>
-
-                        <div className="mt-2 flex items-center justify-between">
-                          <span className="flex items-center text-sm text-gray-500">
-                            <FaClock className="mr-1" />{" "}
-                            {FormatDayTime(post.createdAt)}
-                          </span>
-                          <Typography.Link
-                            className="flex items-center"
-                            onClick={() =>
-                              navigate(`/${post.group.slug}/${post.slug}`)
-                            }
-                          >
-                            Xem thêm <FaChevronRight className="ml-1" />
-                          </Typography.Link>
-                        </div>
                       </div>
-                    </article>
-                  ))}
-                </div>
-                <div className="mt-6 flex justify-center">
-                  <Pagination
-                    onChange={handlePaginationChange}
-                    total={pages.totalItems || 0}
-                    showSizeChanger
-                    showTotal={(total, range) =>
-                      `${range[0]}-${range[1]} of ${total} items`
-                    }
-                    pageSize={pageSize || 10}
-                    pageSizeOptions={["5", "15", "25", "35", "45"]}
-                    current={pages?.currentPage || 1}
-                  />
-                </div>
-              </>
-            ) : (
-              <section>
-                <Result
-                  status="403"
-                  title="Không có dữ liệu!"
-                  subTitle="Trang chưa được thêm dữ liệu vào trong, vui lòng thêm dữ liệu vào!"
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <div className="mt-6 flex justify-center">
+                <Pagination
+                  onChange={handlePaginationChange}
+                  total={pages.totalItems || 0}
+                  showSizeChanger
+                  showTotal={(total, range) =>
+                    `${range[0]}-${range[1]} trên ${total} trang`
+                  }
+                  pageSize={pageSize}
+                  pageSizeOptions={["4", "8", "16", "24", "35", "45"]}
+                  current={pages?.currentPage || 1}
                 />
-              </section>
-            )}
-          </div>
-        </section>
+              </div>
+            </>
+          ) : (
+            <section>
+              <Result
+                status="403"
+                title="Không có dữ liệu!"
+                subTitle="Trang chưa được thêm dữ liệu vào trong, vui lòng thêm dữ liệu vào!"
+              />
+            </section>
+          )}
+        </div>
       )}
     </Layout>
   );

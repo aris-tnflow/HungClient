@@ -111,10 +111,19 @@ const Orders = () => {
       title: "Trạng thái",
       dataIndex: "status",
       width: "10%",
-      ...FilterSelect("status", [
-        { value: true, text: "Đã thanh toán" },
-        { value: false, text: "Chưa thanh toán" },
-      ]),
+      // ...FilterSelect("status", [
+      //   { value: true, text: "Đã thanh toán" },
+      //   { value: false, text: "Chưa thanh toán" },
+      // ]),
+
+      ...FilterSelect({
+        dataIndex: "status",
+        handleTableChange: handleSearchPage,
+        options: [
+          { value: "true", label: "Đã thanh toán" },
+          { value: "false", label: "Chưa thanh toán" },
+        ],
+      }),
       render: (status) =>
         status === true ? (
           <span className="text-success">Đã thanh toán</span>

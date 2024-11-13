@@ -180,10 +180,6 @@ const User = () => {
         { value: true, label: "Cho phép" },
         { value: false, label: "Chặn" },
       ],
-      ...FilterSelect("activeStatus", [
-        { value: "Cho phép", text: "Cho phép" },
-        { value: "Chặn", text: "Chặn" },
-      ]),
     },
     ...(userType === "admin"
       ? [
@@ -343,8 +339,25 @@ const User = () => {
 
   const handleMultiAdd = (data) => {
     userApi.putCourseByEmails(data).then(() => {
-      toastSuccess("put", "Cập nhập thành công!");
+      toastSuccess("put", "Cập Nhập Thành Công!", "Dữ liệu đã được cập nhập!");
       setOpenMultiAdd(false);
+
+      if (isSearch) {
+        dispatch(
+          searchUserApi({
+            [Object.keys(search)[0]]: search[Object.keys(search)[0]],
+            page: current,
+            limit: localStorage.getItem("pageSize") || 10,
+          })
+        );
+      } else {
+        dispatch(
+          getUsersApi({
+            page: current,
+            limit: localStorage.getItem("pageSize") || 10,
+          })
+        );
+      }
     });
   };
 
@@ -445,25 +458,26 @@ const User = () => {
               userApi
                 .get({ page: 1, limit: 999999999 })
                 .then((res) => {
-                  const formatUser = res?.newData?.map((user) => ({
-                    _id: user._id,
-                    "Họ và tên": user.name,
-                    Email: user.email,
-                    Quyền: user.userType === "user" ? "Người dùng" : "Quản lý",
-                    "Trạng thái": user.activeStatus ? "Cho phép" : "Chặn",
-                    "Điện thoại": user.phone,
-                    "Khóa học đã mua": user.courses
-                      .map((courseId) => {
-                        // Tìm khóa học trong dataCoursesFliter
-                        const course = dataCoursesFliter.find(
-                          (item) => item.key === courseId
-                        );
-                        // Nếu tìm thấy khóa học, trả về `text`, nếu không, trả về `id`
-                        return course ? course.text : courseId;
-                      })
-                      .join(", "),
-                    "Ngày tạo": FormatDay(user.createdAt),
-                  }));
+                  const formatUser = res?.newData
+                    ?.filter((user) => user.userType !== "admin")
+                    ?.map((user) => ({
+                      _id: user._id,
+                      "Họ và tên": user.name,
+                      Email: user.email,
+                      Quyền:
+                        user.userType === "user" ? "Người dùng" : "Quản lý",
+                      "Trạng thái": user.activeStatus ? "Cho phép" : "Chặn",
+                      "Điện thoại": user.phone,
+                      "Khóa học đã mua": user.courses
+                        .map((courseId) => {
+                          const course = dataCoursesFliter.find(
+                            (item) => item.key === courseId
+                          );
+                          return course ? course.text : courseId;
+                        })
+                        .join(", "),
+                      "Ngày tạo": FormatDay(user.createdAt),
+                    }));
                   exportDataExcel(formatUser, "Aris-Users.xlsx");
                   toastSuccess(
                     "course",

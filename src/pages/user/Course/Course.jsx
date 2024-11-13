@@ -67,7 +67,7 @@ const HomePage = () => {
     },
     {
       title: "GHI CHÚ BÀI HỌC",
-
+      placement: "right",
       description:
         "Trong bài học có phần ghi chú lý thuyết, mọi người nên lưu ý!",
       target: () => refs.contentRef.current,

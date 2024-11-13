@@ -50,20 +50,22 @@ const model3d = (editor, slug) => {
         tagName: 'model-viewer',
         droppable: false,
         resizable: true,
-        // dmode: 'absolute',
         script: function () {
+          const modelViewer = this;
+          const loader = this.querySelector(".wheel-and-hamster");
+          modelViewer.addEventListener("load", () => {
+            loader.style.display = "none";
+          });
+
+          modelViewer.addEventListener("loading", () => {
+            loader.style.display = "block";
+          });
         },
 
         traits: [
           {
-            name: 'option-file-glb',
-            type: 'option-file',
-            category: option
-          },
-          {
             name: 'input-src-glb',
             type: 'input-file',
-            // type: 'input-src-glb',
             label: 'Link file',
             category: glb,
           },
@@ -155,24 +157,421 @@ const model3d = (editor, slug) => {
             type: 'delay-rotate',
             category: rotate
           },
-          //   label: 'Loader',
-          //   name: 'loader',
-          //   type: 'loader',
-          //   category: loader
-          // },
-          // {
-          //   label: 'Loader',
-          //   name: 'add-loader',
-          //   type: 'add-loader',
-          //   category: loader
-          // },
         ],
 
         attributes: {
           'camera-controls': true,
           'touch-action': 'pan-y',
           'src': 'http://localhost:8082/uploads/3d/file3d/1.glb',
+          'auto-rotate': true,
+          'environment-image': "https://modelviewer.dev/shared-assets/environments/whipple_creek_regional_park_04_1k.hdr"
         },
+
+        content: `
+         <style>
+      .wheel-and-hamster {
+        --dur: 1s;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 12em;
+        height: 12em;
+        font-size: 14px;
+        z-index: 1;
+      }
+
+      .wheel,
+      .hamster,
+      .hamster div,
+      .spoke {
+        position: absolute;
+      }
+
+      .wheel,
+      .spoke {
+        border-radius: 50%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .wheel {
+        background: radial-gradient(
+          100% 100% at center,
+          hsl(0deg 100% 50% / 0%) 47.8%,
+          hsl(46.72deg 100% 50%) 48%
+        );
+        z-index: 2;
+      }
+      .hamster {
+        animation: hamster var(--dur) ease-in-out infinite;
+        top: 50%;
+        left: calc(50% - 3.5em);
+        width: 7em;
+        height: 3.75em;
+        transform: rotate(4deg) translate(-0.8em, 1.85em);
+        transform-origin: 50% 0;
+        z-index: 1;
+      }
+
+      .hamster__head {
+        animation: hamsterHead var(--dur) ease-in-out infinite;
+        background: #ffc000;
+        border-radius: 70% 30% 0 100% / 40% 25% 25% 60%;
+        box-shadow: 0 -0.25em 0 hsl(30, 90%, 80%) inset,
+          0.75em -1.55em 0 hsl(30, 90%, 90%) inset;
+        top: 0;
+        left: -2em;
+        width: 2.75em;
+        height: 2.5em;
+        transform-origin: 100% 50%;
+      }
+
+      .hamster__ear {
+        animation: hamsterEar var(--dur) ease-in-out infinite;
+        background: hsl(0, 90%, 85%);
+        border-radius: 50%;
+        box-shadow: -0.25em 0 #ffaa00 inset;
+        top: -0.25em;
+        right: -0.25em;
+        width: 0.75em;
+        height: 0.75em;
+        transform-origin: 50% 75%;
+      }
+
+      .hamster__eye {
+        animation: hamsterEye var(--dur) linear infinite;
+        background-color: hsl(0, 0%, 0%);
+        border-radius: 50%;
+        top: 0.375em;
+        left: 1.25em;
+        width: 0.5em;
+        height: 0.5em;
+      }
+
+      .hamster__nose {
+        background: hsl(0, 90%, 75%);
+        border-radius: 35% 65% 85% 15% / 70% 50% 50% 30%;
+        top: 0.75em;
+        left: 0;
+        width: 0.2em;
+        height: 0.25em;
+      }
+
+      .hamster__body {
+        animation: hamsterBody var(--dur) ease-in-out infinite;
+        background: hsl(30, 90%, 90%);
+        border-radius: 50% 30% 50% 30% / 15% 60% 40% 40%;
+        box-shadow: 0.1em 0.75em 0 #ffc000 inset,
+          0.15em -0.5em 0 hsl(30, 90%, 80%) inset;
+        top: 0.25em;
+        left: 2em;
+        width: 4.5em;
+        height: 3em;
+        transform-origin: 17% 50%;
+        transform-style: preserve-3d;
+      }
+
+      .hamster__limb--fr,
+      .hamster__limb--fl {
+        clip-path: polygon(0 0, 100% 0, 70% 80%, 60% 100%, 0% 100%, 40% 80%);
+        top: 2em;
+        left: 0.5em;
+        width: 1em;
+        height: 1.5em;
+        transform-origin: 50% 0;
+      }
+
+      .hamster__limb--fr {
+        animation: hamsterFRLimb var(--dur) linear infinite;
+        background: linear-gradient(
+          hsl(30, 90%, 80%) 80%,
+          hsl(0, 90%, 75%) 80%
+        );
+        transform: rotate(15deg) translateZ(-1px);
+      }
+
+      .hamster__limb--fl {
+        animation: hamsterFLLimb var(--dur) linear infinite;
+        background: linear-gradient(
+          hsl(30, 90%, 90%) 80%,
+          hsl(0, 90%, 85%) 80%
+        );
+        transform: rotate(15deg);
+      }
+
+      .hamster__limb--br,
+      .hamster__limb--bl {
+        border-radius: 0.75em 0.75em 0 0;
+        clip-path: polygon(
+          0 0,
+          100% 0,
+          100% 30%,
+          70% 90%,
+          70% 100%,
+          30% 100%,
+          40% 90%,
+          0% 30%
+        );
+        top: 1em;
+        left: 2.8em;
+        width: 1.5em;
+        height: 2.5em;
+        transform-origin: 50% 30%;
+      }
+
+      .hamster__limb--br {
+        animation: hamsterBRLimb var(--dur) linear infinite;
+        background: linear-gradient(
+          hsl(30, 90%, 80%) 90%,
+          hsl(0, 90%, 75%) 90%
+        );
+        transform: rotate(-25deg) translateZ(-1px);
+      }
+
+      .hamster__limb--bl {
+        animation: hamsterBLLimb var(--dur) linear infinite;
+        background: linear-gradient(
+          hsl(30, 90%, 90%) 90%,
+          hsl(0, 90%, 85%) 90%
+        );
+        transform: rotate(-25deg);
+      }
+
+      .hamster__tail {
+        animation: hamsterTail var(--dur) linear infinite;
+        background: hsl(0, 90%, 85%);
+        border-radius: 0.25em 50% 50% 0.25em;
+        box-shadow: 0 -0.2em 0 hsl(0, 90%, 75%) inset;
+        top: 1.5em;
+        right: -0.5em;
+        width: 1em;
+        height: 0.5em;
+        transform: rotate(30deg) translateZ(-1px);
+        transform-origin: 0.25em 0.25em;
+      }
+
+      .spoke {
+        animation: spoke var(--dur) linear infinite;
+        background: radial-gradient(
+            100% 100% at center,
+            hsl(49deg 100% 47.76%) 4.8%,
+            hsla(0, 0%, 60%, 0) 5%
+          ),
+          linear-gradient(
+              hsla(0, 0%, 55%, 0) 46.9%,
+              hsl(44.44deg 100% 50%) 47% 52.9%,
+              hsla(0, 0%, 65%, 0) 53%
+            )
+            50% 50% / 99% 99% no-repeat;
+      }
+
+      @keyframes hamster {
+        from,
+        to {
+          transform: rotate(4deg) translate(-0.8em, 1.85em);
+        }
+
+        50% {
+          transform: rotate(0) translate(-0.8em, 1.85em);
+        }
+      }
+
+      @keyframes hamsterHead {
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+          transform: rotate(0);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+          transform: rotate(8deg);
+        }
+      }
+
+      @keyframes hamsterEye {
+        from,
+        90%,
+        to {
+          transform: scaleY(1);
+        }
+
+        95% {
+          transform: scaleY(0);
+        }
+      }
+
+      @keyframes hamsterEar {
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+          transform: rotate(0);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+          transform: rotate(12deg);
+        }
+      }
+
+      @keyframes hamsterBody {
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+          transform: rotate(0);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+          transform: rotate(2deg);
+        }
+      }
+
+      @keyframes hamsterFRLimb {
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+          transform: rotate(50deg) translateZ(-1px);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+          transform: rotate(-30deg) translateZ(-1px);
+        }
+      }
+
+      @keyframes hamsterFLLimb {
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+          transform: rotate(-30deg);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+          transform: rotate(50deg);
+        }
+      }
+
+      @keyframes hamsterBRLimb {
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+          transform: rotate(-60deg) translateZ(-1px);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+          transform: rotate(20deg) translateZ(-1px);
+        }
+      }
+
+      @keyframes hamsterBLLimb {
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+          transform: rotate(20deg);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+          transform: rotate(-60deg);
+        }
+      }
+
+      @keyframes hamsterTail {
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+          transform: rotate(30deg) translateZ(-1px);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+          transform: rotate(10deg) translateZ(-1px);
+        }
+      }
+
+      @keyframes spoke {
+        from {
+          transform: rotate(0);
+        }
+
+        to {
+          transform: rotate(-1turn);
+        }
+      }
+
+      .model-container {
+        position: relative;
+        width: 100%;
+
+      }
+
+      model-viewer {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+        <div
+          aria-label="Orange and tan hamster running in a metal wheel"
+          role="img"
+          class="wheel-and-hamster"
+        >
+          <div class="wheel"></div>
+          <div class="hamster">
+            <div class="hamster__body">
+              <div class="hamster__head">
+                <div class="hamster__ear"></div>
+                <div class="hamster__eye"></div>
+                <div class="hamster__nose"></div>
+              </div>
+              <div class="hamster__limb hamster__limb--fr"></div>
+              <div class="hamster__limb hamster__limb--fl"></div>
+              <div class="hamster__limb hamster__limb--br"></div>
+              <div class="hamster__limb hamster__limb--bl"></div>
+              <div class="hamster__tail"></div>
+            </div>
+          </div>
+          <div class="spoke"></div>
+        </div>
+        `,
 
         style: {
           width: '100%',
@@ -197,12 +596,20 @@ const model3d = (editor, slug) => {
       button.addEventListener('click', () => {
         const modelviewer = component.view.el;
         const orbit = modelviewer.getCameraOrbit()
-        const target = modelviewer.getCameraTarget();
         const fov = modelviewer.getFieldOfView();
 
-        component.addAttributes({ 'camera-orbit': orbit });
+        function formatOrbit(orbit) {
+          const thetaDeg = (orbit.theta * 180 / Math.PI).toFixed(2);
+          const phiDeg = (orbit.phi * 180 / Math.PI).toFixed(2);
+          const radius = orbit.radius.toFixed(2);
+          return `${thetaDeg}deg ${phiDeg}deg ${radius}m`;
+        }
+
+        const formatOrbitString = formatOrbit(orbit);
+        component.addAttributes({ 'camera-orbit': formatOrbitString });
+
         component.addAttributes({ 'field-of-view': fov });
-        toastSuccess("Đã đặt làm camera mặc định", "Vui lòng lưu trang !");
+        toastSuccess("", "Đã Cập Nhập Camera!", "Vui lòng lưu lại trang.");
       });
 
       return el;
@@ -217,14 +624,13 @@ const model3d = (editor, slug) => {
 
     createInput({ component }) {
       const value = parseInt(component.view.el?.getAttribute('max-field-of-view')?.replace("deg", "")) || component.view.el.getFieldOfView().toFixed(0);
-      console.log(value);
       const el = document.createElement('div');
       el.classList.add('flex', 'items-center', 'justify-center', 'flex-col');
       el.innerHTML = `
       <input 
         id="fov" 
         type="range" 
-        min="0" max="120" step="10" value="${value}"
+        min="30" max="120" step="10" value="${value}"
         class="w-full h-2 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
       >
     `;
@@ -235,14 +641,13 @@ const model3d = (editor, slug) => {
       const input = this.el.querySelector('#fov');
       var fov = input.value;
       component.addAttributes({ 'max-field-of-view': `${fov}deg` });
-      // component.addAttributes({ 'field-of-view': `${fov}deg` });
     },
   });
 
   editor.TraitManager.addType('camera-min-fov', {
 
     createInput({ component }) {
-      const maxOrbit = parseInt(component.view.el?.getAttribute('max-field-of-view')?.replace("deg", "")) || 60;
+      const maxOrbit = parseInt(component.view.el?.getAttribute('max-field-of-view')?.replace("deg", "")) || 30;
       const minOrbit = parseInt(component.view.el?.getAttribute('min-field-of-view')?.replace("deg", "")) || 30;
       const el = document.createElement('div');
       el.classList.add('flex', 'items-center', 'justify-center', 'flex-col');
@@ -264,469 +669,469 @@ const model3d = (editor, slug) => {
     },
   });
 
-  editor.TraitManager.addType('option-file', {
-    noLabel: true,
-    createInput({ component }) {
-      const el = document.createElement('div');
-      el.classList.add('flex', 'items-center', 'justify-center');
-      el.innerHTML = `
-      <button id="a">Thêm tùy chọn</button>
-      `;
-
-      const mvElement = component.view.el;
-      const scene = mvElement[Object.getOwnPropertySymbols(mvElement).find(e => e.description === 'scene')];
-      // Event 
-      const button = el.querySelector('#a');
-      button.addEventListener('click', () => {
-
-        editor.DomComponents.addComponent({
-          tagName: 'div',
-          classes: ['aaa'],
-          components: `
-              <style>
-            .aaa{
-                position: absolute;
-                bottom: 20px;
-                right: 0;
-                display: flex;
-            }
-
-            .aaa:hover .main {
-                height: auto;
-            }
-
-            .main {
-                display: flex;
-                flex-wrap: wrap;
-                width: 14em;
-                height: 0px;
-                overflow: hidden;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-            }
-
-            .card {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 60px;
-                height: 60px;
-                border-top-left-radius: text10px;
-                background: lightgrey;
-                transition: 0.4s ease-in-out, 0.2s background-color ease-in-out,
-                    0.2s background-image ease-in-out;
-                background: none;
-                border: 1px solid transparent;
-                -webkit-backdrop-filter: blur(5px);
-            }
-
-            .card img {
-                opacity: 0;
-                width: 90%;
-                height: 90%;
-                border-radius: 5px;
-                object-fit: cover;
-                transition: 0.2s ease-in-out;
-            }
-
-            .card .instagram {
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-                fill: #cc39a4;
-            }
-
-            .card:nth-child(2) {
-                border-radius: 0px;
-            }
-
-            .card:nth-child(2) .twitter {
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-                fill: #03a9f4;
-            }
-
-            .card:nth-child(3) {
-                border-top-right-radius: 10px;
-                border-top-left-radius: 0px;
-            }
-
-            .card:nth-child(3) .dribble {
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-                fill: #ffb5d2;
-            }
-
-            .card:nth-child(4) {
-                border-radius: 0px;
-            }
-
-            .card:nth-child(4) .codepen {
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-                fill: black;
-            }
-
-            .card:nth-child(5) {
-                border-radius: 0px;
-            }
-
-            .card:nth-child(5) .uiverse {
-                position: absolute;
-                margin-left: 0.2em;
-                margin-top: 0.2em;
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-            }
-
-            .card:nth-child(6) {
-                border-radius: 0px;
-            }
-
-            .card:nth-child(6) .discord {
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-                fill: #8c9eff;
-            }
-
-            .card:nth-child(7) {
-                border-bottom-left-radius: 10px;
-                border-top-left-radius: 0px;
-            }
-
-            .card:nth-child(7) .github {
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-                fill: black;
-            }
-
-            .card:nth-child(8) {
-                border-radius: 0px;
-            }
-
-            .card:nth-child(8) .telegram {
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-                fill: #29b6f6;
-            }
-
-            .card:nth-child(9) {
-                border-bottom-right-radius: 10px;
-                border-top-left-radius: 0px;
-            }
-
-            .card:nth-child(9) .reddit {
-                opacity: 0;
-                transition: 0.2s ease-in-out;
-            }
-
-            .main:hover {
-                width: 14em;
-                cursor: pointer;
-            }
-            .main:hover .card {
-                border-radius: 10px;
-                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-                border: 1px solid rgba(255, 255, 255, 0.3);
-                background: rgba(255, 255, 255, 0.2);
-            }
-
-            .main:hover .card:nth-child(5) {
-                border: transparent;
-            }
-
-            .main:hover .text {
-                opacity: 0;
-                z-index: -3;
-            }
-
-            .main:hover img {
-                opacity: 1;
-            }
-
-            .card:nth-child(1):hover {
-                background-color: #cc39a4;
-            }
-
-            .card:nth-child(2):hover {
-                background-color: #03a9f4;
-            }
-
-            .card:nth-child(3):hover {
-                background-color: #ffb5d2;
-            }
-
-            .card:nth-child(4):hover {
-                background-color: #1e1f26;
-            }
-            .card:nth-child(5):hover {
-                animation: backgroundIMG 0.1s;
-                animation-fill-mode: forwards;
-            }
-
-            @keyframes backgroundIMG {
-                100% {
-                    background-image: linear-gradient(#bf66ff, #6248ff, #00ddeb);
-                }
-            }
-
-            .card:nth-child(6):hover {
-                background-color: #8c9eff;
-            }
-
-            .card:nth-child(7):hover {
-                background-color: black;
-            }
-
-            .card:nth-child(8):hover {
-                background-color: #29b6f6;
-            }
-
-            .card:nth-child(9):hover {
-                background-color: rgb(255, 69, 0);
-            }
-
-            .text {
-                bottom: 0px;
-                width: 100%;
-                position: absolute;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 0.7em;
-                transition: 0.4s ease-in-out;
-                text-align: center;
-                font-weight: bold;
-                letter-spacing: 0.33em;
-                z-index: 3;
-            }
-        </style>
-
-        <style>
-            .btn {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 11rem;
-                overflow: hidden;
-                height: 2.5rem;
-                background-size: 300% 300%;
-                backdrop-filter: blur(1rem);
-                border-radius: 5rem;
-                transition: 0.5s;
-                animation: gradient_301 5s ease infinite;
-                border: double 4px transparent;
-                background-image: linear-gradient(#212121, #212121), linear-gradient(137.48deg, #ffdb3b 10%, #FE53BB 45%, #8F51EA 67%, #0044ff 87%);
-                background-origin: border-box;
-                background-clip: content-box, border-box;
-            }
-
-            #container-stars {
-                position: absolute;
-                z-index: -1;
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-                transition: 0.5s;
-                backdrop-filter: blur(1rem);
-                border-radius: 5rem;
-            }
-
-            strong {
-                z-index: 2;
-                font-family: 'Roboto', sans-serif;
-                font-size: 12px;
-                letter-spacing: 2px;
-                color: #FFFFFF;
-            }
-
-            #glow {
-                position: absolute;
-                display: flex;
-                width: 12rem;
-            }
-
-            .circle {
-                width: 100%;
-                height: 30px;
-                filter: blur(2rem);
-                animation: pulse_3011 4s infinite;
-                z-index: -1;
-            }
-
-            .circle:nth-of-type(1) {
-                background: rgba(254, 83, 186, 0.636);
-            }
-
-            .circle:nth-of-type(2) {
-                background: rgba(142, 81, 234, 0.704);
-            }
-
-            .btn:hover #container-stars {
-                z-index: 1;
-                background-color: #212121;
-            }
-
-            .btn:hover {
-                transform: scale(1.1)
-            }
-
-            .btn:active {
-                border: double 4px #FE53BB;
-                background-origin: border-box;
-                background-clip: content-box, border-box;
-                animation: none;
-            }
-
-            .btn:active .circle {
-                background: #FE53BB;
-            }
-
-            #stars {
-                position: relative;
-                background: transparent;
-                width: 200rem;
-                height: 200rem;
-            }
-
-            #stars::after {
-                content: "";
-                position: absolute;
-                top: -10rem;
-                left: -100rem;
-                width: 100%;
-                height: 100%;
-                animation: animStarRotate 90s linear infinite;
-            }
-
-            #stars::after {
-                background-image: radial-gradient(#ffffff 1px, transparent 1%);
-                background-size: 50px 50px;
-            }
-
-            #stars::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: -50%;
-                width: 170%;
-                height: 500%;
-                animation: animStar 60s linear infinite;
-            }
-
-            #stars::before {
-                background-image: radial-gradient(#ffffff 1px, transparent 1%);
-                background-size: 50px 50px;
-                opacity: 0.5;
-            }
-
-            @keyframes animStar {
-                from {
-                    transform: translateY(0);
-                }
-
-                to {
-                    transform: translateY(-135rem);
-                }
-            }
-
-            @keyframes animStarRotate {
-                from {
-                    transform: rotate(360deg);
-                }
-
-                to {
-                    transform: rotate(0);
-                }
-            }
-
-            @keyframes gradient_301 {
-                0% {
-                    background-position: 0% 50%;
-                }
-
-                50% {
-                    background-position: 100% 50%;
-                }
-
-                100% {
-                    background-position: 0% 50%;
-                }
-            }
-
-            @keyframes pulse_3011 {
-                0% {
-                    transform: scale(0.75);
-                    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
-                }
-
-                70% {
-                    transform: scale(1);
-                    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
-                }
-
-                100% {
-                    transform: scale(0.75);
-                    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
-                }
-            }
-        </style>
-              <div class="main">
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-                    <div class="card">
-                        <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
-                    </div>
-
-                    <div class="text">
-                        <button class="btn" type="button">
-                            <strong>Chân đế giày Okla</strong>
-                            <div id="container-stars">
-                                <div id="stars"></div>
-                            </div>
-
-                            <div id="glow">
-                                <div class="circle"></div>
-                                <div class="circle"></div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-              `,
-        });
-
-        // console.log(getAllObjects(scene));
-        // console.log(groupObjectNames(getAllObjects(scene)));
-      });
-
-      return el;
-    },
-
-    onEvent({ component }) {
-    },
-  });
+  // editor.TraitManager.addType('option-file', {
+  //   noLabel: true,
+  //   createInput({ component }) {
+  //     const el = document.createElement('div');
+  //     el.classList.add('flex', 'items-center', 'justify-center');
+  //     el.innerHTML = `
+  //     <button id="a">Thêm tùy chọn</button>
+  //     `;
+
+  //     const mvElement = component.view.el;
+  //     const scene = mvElement[Object.getOwnPropertySymbols(mvElement).find(e => e.description === 'scene')];
+  //     // Event 
+  //     const button = el.querySelector('#a');
+  //     button.addEventListener('click', () => {
+
+  //       editor.DomComponents.addComponent({
+  //         tagName: 'div',
+  //         classes: ['aaa'],
+  //         components: `
+  //             <style>
+  //           .aaa{
+  //               position: absolute;
+  //               bottom: 20px;
+  //               right: 0;
+  //               display: flex;
+  //           }
+
+  //           .aaa:hover .main {
+  //               height: auto;
+  //           }
+
+  //           .main {
+  //               display: flex;
+  //               flex-wrap: wrap;
+  //               width: 14em;
+  //               height: 0px;
+  //               overflow: hidden;
+  //               align-items: center;
+  //               justify-content: center;
+  //               gap: 10px;
+  //           }
+
+  //           .card {
+  //               display: flex;
+  //               align-items: center;
+  //               justify-content: center;
+  //               width: 60px;
+  //               height: 60px;
+  //               border-top-left-radius: text10px;
+  //               background: lightgrey;
+  //               transition: 0.4s ease-in-out, 0.2s background-color ease-in-out,
+  //                   0.2s background-image ease-in-out;
+  //               background: none;
+  //               border: 1px solid transparent;
+  //               -webkit-backdrop-filter: blur(5px);
+  //           }
+
+  //           .card img {
+  //               opacity: 0;
+  //               width: 90%;
+  //               height: 90%;
+  //               border-radius: 5px;
+  //               object-fit: cover;
+  //               transition: 0.2s ease-in-out;
+  //           }
+
+  //           .card .instagram {
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //               fill: #cc39a4;
+  //           }
+
+  //           .card:nth-child(2) {
+  //               border-radius: 0px;
+  //           }
+
+  //           .card:nth-child(2) .twitter {
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //               fill: #03a9f4;
+  //           }
+
+  //           .card:nth-child(3) {
+  //               border-top-right-radius: 10px;
+  //               border-top-left-radius: 0px;
+  //           }
+
+  //           .card:nth-child(3) .dribble {
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //               fill: #ffb5d2;
+  //           }
+
+  //           .card:nth-child(4) {
+  //               border-radius: 0px;
+  //           }
+
+  //           .card:nth-child(4) .codepen {
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //               fill: black;
+  //           }
+
+  //           .card:nth-child(5) {
+  //               border-radius: 0px;
+  //           }
+
+  //           .card:nth-child(5) .uiverse {
+  //               position: absolute;
+  //               margin-left: 0.2em;
+  //               margin-top: 0.2em;
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //           }
+
+  //           .card:nth-child(6) {
+  //               border-radius: 0px;
+  //           }
+
+  //           .card:nth-child(6) .discord {
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //               fill: #8c9eff;
+  //           }
+
+  //           .card:nth-child(7) {
+  //               border-bottom-left-radius: 10px;
+  //               border-top-left-radius: 0px;
+  //           }
+
+  //           .card:nth-child(7) .github {
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //               fill: black;
+  //           }
+
+  //           .card:nth-child(8) {
+  //               border-radius: 0px;
+  //           }
+
+  //           .card:nth-child(8) .telegram {
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //               fill: #29b6f6;
+  //           }
+
+  //           .card:nth-child(9) {
+  //               border-bottom-right-radius: 10px;
+  //               border-top-left-radius: 0px;
+  //           }
+
+  //           .card:nth-child(9) .reddit {
+  //               opacity: 0;
+  //               transition: 0.2s ease-in-out;
+  //           }
+
+  //           .main:hover {
+  //               width: 14em;
+  //               cursor: pointer;
+  //           }
+  //           .main:hover .card {
+  //               border-radius: 10px;
+  //               box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  //               border: 1px solid rgba(255, 255, 255, 0.3);
+  //               background: rgba(255, 255, 255, 0.2);
+  //           }
+
+  //           .main:hover .card:nth-child(5) {
+  //               border: transparent;
+  //           }
+
+  //           .main:hover .text {
+  //               opacity: 0;
+  //               z-index: -3;
+  //           }
+
+  //           .main:hover img {
+  //               opacity: 1;
+  //           }
+
+  //           .card:nth-child(1):hover {
+  //               background-color: #cc39a4;
+  //           }
+
+  //           .card:nth-child(2):hover {
+  //               background-color: #03a9f4;
+  //           }
+
+  //           .card:nth-child(3):hover {
+  //               background-color: #ffb5d2;
+  //           }
+
+  //           .card:nth-child(4):hover {
+  //               background-color: #1e1f26;
+  //           }
+  //           .card:nth-child(5):hover {
+  //               animation: backgroundIMG 0.1s;
+  //               animation-fill-mode: forwards;
+  //           }
+
+  //           @keyframes backgroundIMG {
+  //               100% {
+  //                   background-image: linear-gradient(#bf66ff, #6248ff, #00ddeb);
+  //               }
+  //           }
+
+  //           .card:nth-child(6):hover {
+  //               background-color: #8c9eff;
+  //           }
+
+  //           .card:nth-child(7):hover {
+  //               background-color: black;
+  //           }
+
+  //           .card:nth-child(8):hover {
+  //               background-color: #29b6f6;
+  //           }
+
+  //           .card:nth-child(9):hover {
+  //               background-color: rgb(255, 69, 0);
+  //           }
+
+  //           .text {
+  //               bottom: 0px;
+  //               width: 100%;
+  //               position: absolute;
+  //               display: flex;
+  //               justify-content: center;
+  //               align-items: center;
+  //               font-size: 0.7em;
+  //               transition: 0.4s ease-in-out;
+  //               text-align: center;
+  //               font-weight: bold;
+  //               letter-spacing: 0.33em;
+  //               z-index: 3;
+  //           }
+  //       </style>
+
+  //       <style>
+  //           .btn {
+  //               display: flex;
+  //               justify-content: center;
+  //               align-items: center;
+  //               width: 11rem;
+  //               overflow: hidden;
+  //               height: 2.5rem;
+  //               background-size: 300% 300%;
+  //               backdrop-filter: blur(1rem);
+  //               border-radius: 5rem;
+  //               transition: 0.5s;
+  //               animation: gradient_301 5s ease infinite;
+  //               border: double 4px transparent;
+  //               background-image: linear-gradient(#212121, #212121), linear-gradient(137.48deg, #ffdb3b 10%, #FE53BB 45%, #8F51EA 67%, #0044ff 87%);
+  //               background-origin: border-box;
+  //               background-clip: content-box, border-box;
+  //           }
+
+  //           #container-stars {
+  //               position: absolute;
+  //               z-index: -1;
+  //               width: 100%;
+  //               height: 100%;
+  //               overflow: hidden;
+  //               transition: 0.5s;
+  //               backdrop-filter: blur(1rem);
+  //               border-radius: 5rem;
+  //           }
+
+  //           strong {
+  //               z-index: 2;
+  //               font-family: 'Roboto', sans-serif;
+  //               font-size: 12px;
+  //               letter-spacing: 2px;
+  //               color: #FFFFFF;
+  //           }
+
+  //           #glow {
+  //               position: absolute;
+  //               display: flex;
+  //               width: 12rem;
+  //           }
+
+  //           .circle {
+  //               width: 100%;
+  //               height: 30px;
+  //               filter: blur(2rem);
+  //               animation: pulse_3011 4s infinite;
+  //               z-index: -1;
+  //           }
+
+  //           .circle:nth-of-type(1) {
+  //               background: rgba(254, 83, 186, 0.636);
+  //           }
+
+  //           .circle:nth-of-type(2) {
+  //               background: rgba(142, 81, 234, 0.704);
+  //           }
+
+  //           .btn:hover #container-stars {
+  //               z-index: 1;
+  //               background-color: #212121;
+  //           }
+
+  //           .btn:hover {
+  //               transform: scale(1.1)
+  //           }
+
+  //           .btn:active {
+  //               border: double 4px #FE53BB;
+  //               background-origin: border-box;
+  //               background-clip: content-box, border-box;
+  //               animation: none;
+  //           }
+
+  //           .btn:active .circle {
+  //               background: #FE53BB;
+  //           }
+
+  //           #stars {
+  //               position: relative;
+  //               background: transparent;
+  //               width: 200rem;
+  //               height: 200rem;
+  //           }
+
+  //           #stars::after {
+  //               content: "";
+  //               position: absolute;
+  //               top: -10rem;
+  //               left: -100rem;
+  //               width: 100%;
+  //               height: 100%;
+  //               animation: animStarRotate 90s linear infinite;
+  //           }
+
+  //           #stars::after {
+  //               background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  //               background-size: 50px 50px;
+  //           }
+
+  //           #stars::before {
+  //               content: "";
+  //               position: absolute;
+  //               top: 0;
+  //               left: -50%;
+  //               width: 170%;
+  //               height: 500%;
+  //               animation: animStar 60s linear infinite;
+  //           }
+
+  //           #stars::before {
+  //               background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  //               background-size: 50px 50px;
+  //               opacity: 0.5;
+  //           }
+
+  //           @keyframes animStar {
+  //               from {
+  //                   transform: translateY(0);
+  //               }
+
+  //               to {
+  //                   transform: translateY(-135rem);
+  //               }
+  //           }
+
+  //           @keyframes animStarRotate {
+  //               from {
+  //                   transform: rotate(360deg);
+  //               }
+
+  //               to {
+  //                   transform: rotate(0);
+  //               }
+  //           }
+
+  //           @keyframes gradient_301 {
+  //               0% {
+  //                   background-position: 0% 50%;
+  //               }
+
+  //               50% {
+  //                   background-position: 100% 50%;
+  //               }
+
+  //               100% {
+  //                   background-position: 0% 50%;
+  //               }
+  //           }
+
+  //           @keyframes pulse_3011 {
+  //               0% {
+  //                   transform: scale(0.75);
+  //                   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  //               }
+
+  //               70% {
+  //                   transform: scale(1);
+  //                   box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  //               }
+
+  //               100% {
+  //                   transform: scale(0.75);
+  //                   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  //               }
+  //           }
+  //       </style>
+  //             <div class="main">
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+  //                   <div class="card">
+  //                       <img src="https://img.freepik.com/free-photo/banner-with-blue-orange-balls-generative-al_169016-28604.jpg" alt="">
+  //                   </div>
+
+  //                   <div class="text">
+  //                       <button class="btn" type="button">
+  //                           <strong>Chân đế giày Okla</strong>
+  //                           <div id="container-stars">
+  //                               <div id="stars"></div>
+  //                           </div>
+
+  //                           <div id="glow">
+  //                               <div class="circle"></div>
+  //                               <div class="circle"></div>
+  //                           </div>
+  //                       </button>
+  //                   </div>
+  //               </div>
+  //             `,
+  //       });
+
+  //       // console.log(getAllObjects(scene));
+  //       // console.log(groupObjectNames(getAllObjects(scene)));
+  //     });
+
+  //     return el;
+  //   },
+
+  //   onEvent({ component }) {
+  //   },
+  // });
 
   editor.TraitManager.addType('loader', {
     createInput() {
@@ -801,16 +1206,16 @@ const model3d = (editor, slug) => {
           .then(response => {
             if (response.ok == true) {
               component.addAttributes({ src: inputType.value });
-              toastSuccess("File đã được cập nhập");
+              toastSuccess("", "File Đã Được Cập Nhập", "Vui lòng lưu lại trang.");
             } else {
-              toastError("File không tồn tại hoặc đã bị xóa !", "Vui lòng nhập lại !");
+              toastError("", "File Không Tồn Tại Hoặc Đã Bị Xóa!", "Vui lòng thử lại sau.");
             }
           })
           .catch(() => {
-            toastError("Có lỗi xảy ra", "Vui lòng thử lại !");
+            toastError("", "Có Lỗi Xảy Ra", "Vui lòng thử lại sau.");
           });
       } else {
-        toastError("Link không hợp lệ", "Vui lòng nhập lại !");
+        toastError("", "Link Không Hợp Lệ", "Vui lòng thử lại sau.");
       }
     },
   });
@@ -834,10 +1239,10 @@ const model3d = (editor, slug) => {
         formData.append('file3d', inputType.files[0]);
         fileApi.file3D(formData)
           .then((data) => {
-            toastSuccess('3d', "Đã cập nhập file", "Vui lòng lưu trang !");
+            toastSuccess('3d', "Đã Cập Nhập File!", "Vui lòng lưu lại trang.");
             component.addAttributes({ src: `${baseURL}/uploads/3d/${data.file}` });
           })
-          .catch((err) => toastError('3d', "Có lỗi xảy ra", err));
+          .catch(() => toastError('3d', "Có Lỗi Xảy Ra", "Vui lòng thử lại sau."));
       }
     },
   });
@@ -962,16 +1367,16 @@ const model3d = (editor, slug) => {
           .then(response => {
             if (response.ok == true) {
               component.addAttributes({ 'environment-image': inputType.value });
-              toastSuccess("File đã được cập nhập");
+              toastSuccess("", "File đã được cập nhập", "Vui lòng lưu lại trang.");
             } else {
-              toastError("File không tồn tại hoặc đã bị xóa !", "Vui lòng nhập lại !");
+              toastError("", "File Không Tồn Tại Hoặc Đã Bị Xóa!", "Vui lòng thử lại sau.");
             }
           })
           .catch(() => {
-            toastError("Có lỗi xảy ra", "Vui lòng thử lại !");
+            toastError("", "Có Lỗi Xảy Ra", "Vui lòng thử lại sau.");
           });
       } else {
-        toastError("Link không hợp lệ", "Vui lòng nhập lại !");
+        toastError("", "Link Không Hợp Lệ", "Vui lòng thử lại sau.");
       }
     },
   });
@@ -1006,7 +1411,7 @@ const model3d = (editor, slug) => {
 
       if (environment == 'neutral' || environment == 'legacy') {
         component.removeAttributes('skybox-image');
-        toastError("Môi trường mặc định không hỗ trợ skybox !", "Vui lòng chọn môi trường khác !");
+        toastError("", "Môi Trường Mặc Định Không Hỗ Trợ Skybox!", "Vui lòng chọn môi trường khác.");
         return;
       }
 
@@ -1131,7 +1536,7 @@ const model3d = (editor, slug) => {
   editor.TraitManager.addType('delay-rotate', {
 
     createInput({ component }) {
-      const value = component.view.el.getAttribute('auto-rotate-delay') || 3000;
+      const value = component.view.el.getAttribute('auto-rotate-delay') || 500;
       const el = document.createElement('div');
       el.classList.add('flex', 'items-center', 'justify-center', 'flex-col');
       el.innerHTML = `

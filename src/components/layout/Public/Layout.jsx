@@ -35,7 +35,6 @@ import { createRoot } from "react-dom/client";
 import { getInfoApi } from "~/redux/slices/Data/infoSlice";
 import { getCartDetailApi } from "~/redux/slices/cartDetailSlice";
 import { getNotifyPublicApi } from "~/redux/slices/Data/notificationPublicSlice";
-import { useMediaQuery } from "react-responsive";
 import { PiIdentificationCardFill } from "react-icons/pi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { AiFillDashboard } from "react-icons/ai";
@@ -455,22 +454,35 @@ const LayoutPublic = ({
   }, [cart, user]);
 
   useEffect(() => {
-    if (loadingNotify) {
-      dispatch(getNotifyPublicApi({ type: "public" }));
-    }
-  }, []);
+    const fetchData = async () => {
+      try {
+        const promises = [];
 
-  useEffect(() => {
-    if (loadingMenu) {
-      dispatch(getMenuApi());
-    }
-  }, [dispatch, loadingMenu]);
+        if (loadingNotify) {
+          promises.push(dispatch(getNotifyPublicApi({ type: "public" })));
+        }
+        if (loadingMenu) {
+          promises.push(dispatch(getMenuApi()));
+        }
+        if (loading) {
+          promises.push(dispatch(getInfoApi()));
+        }
 
-  useEffect(() => {
-    if (loading) {
-      dispatch(getInfoApi());
-    }
-    window.scrollTo(0, 0);
+        // Kiểm tra promises trước khi gọi Promise.all
+        console.log("Promises:", promises);
+
+        if (promises.length > 0) {
+          // Đảm bảo Promise.all được gọi
+          console.log("Running Promise.all");
+          await Promise.all(promises);
+          console.log("All promises resolved");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -491,7 +503,6 @@ const LayoutPublic = ({
           <script type="application/ld+json">{JSON.stringify(ldJson)}</script>
         )}
       </Helmet>
-
       {menu?.[0]?.css && (
         <>
           <style dangerouslySetInnerHTML={{ __html: menu?.[0]?.css }} />

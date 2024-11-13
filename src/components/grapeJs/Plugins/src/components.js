@@ -31,7 +31,7 @@ export default (editor, opts = {}) => {
         },
 
         style: {
-          "height": "80px",
+          "height": "95",
         }
       },
     },

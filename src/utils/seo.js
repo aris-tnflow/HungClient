@@ -92,3 +92,48 @@ export const getLdJsCourse = (course, info) => ({
         }
     ]
 })
+
+export const getLdJsArticle = (article, info) => ({
+    "@context": "https://schema.org/",
+    "@id": article?.slug,
+    "@type": "Article",
+    "headline": article?.title,
+    "description": article?.description,
+    "author": {
+        "@type": "Person",
+        "name": "Aris",
+        "url": `${baseClient}/author/${article?.slug}`
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": `${info.name}`,
+        "url": `${baseClient}`,
+        "logo": {
+            "@type": "ImageObject",
+            "url": `${baseURL}/upload/logo.png`
+        }
+    },
+
+    "image": `${baseURL}/upload/article/${article?.image}`,
+    "articleSection": article?.category,
+    "keywords": article?.tags?.join(", "),
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `${baseClient}/article/${article?.slug}`
+    },
+    "inLanguage": "vn",
+    "about": [
+        "Truyền thông",
+        "Tin tức",
+        "Đổi mới sáng tạo"
+    ],
+    "audience": {
+        "@type": "Audience",
+        "audienceType": "General"
+    },
+    "isPartOf": {
+        "@type": "CreativeWorkSeries",
+        "name": "Bài viết trên website"
+    }
+});
+

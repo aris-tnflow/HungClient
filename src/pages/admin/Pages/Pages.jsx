@@ -55,6 +55,8 @@ const Pages = () => {
 
   const [openAddPage, setOpenAddPage] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
+  const [search, setSearch] = useState({});
+  const [isSearch, setIsSearch] = useState(false);
 
   const [drag, setDrag] = useState(
     localStorage.getItem("drag") === "true" ? true : false
@@ -93,6 +95,8 @@ const Pages = () => {
         })
       );
       setCurrent(1);
+      setIsSearch(true);
+      setSearch({ [searchedColumn]: searchText });
     } else {
       genericDispatch(
         dispatch,
@@ -146,6 +150,7 @@ const Pages = () => {
       dataIndex: "title",
       width: "12%",
       editable: true,
+      ellipsis: true,
       ...FilterText({
         dataIndex: "title",
         handleTableChange: handleSearchPage,
@@ -181,6 +186,17 @@ const Pages = () => {
           ? groupPages.map((item) => ({ label: item.group, value: item._id }))
           : []),
       ],
+      ...(Array.isArray(groupPages) && groupPages?.length > 0
+        ? FilterSelect({
+            dataIndex: "group",
+            handleTableChange: handleSearchPage,
+            options: groupPages?.map((item) => ({
+              label: item.group,
+              value: item._id,
+            })),
+          })
+        : {}),
+
       render: (group) =>
         group &&
         groupPages &&
@@ -188,12 +204,6 @@ const Pages = () => {
         groupPages?.length > 0
           ? FindNameById(group, groupPages, "group")
           : null,
-      ...(Array.isArray(groupPages) && groupPages?.length > 0
-        ? FilterSelect(
-            "group",
-            groupPages?.map((item) => ({ text: item.group, value: item._id }))
-          )
-        : {}),
     },
   ];
 
@@ -279,6 +289,35 @@ const Pages = () => {
       header={"BÀI VIẾT"}
       button={
         <>
+          {isSearch && (
+            <>
+              <Typography.Text className="mb-0">Đang lọc theo</Typography.Text>
+              {Object.entries(search).map(([key, value]) => (
+                <Typography.Text type="danger" className="!mb-0" key={key}>
+                  {key}: {value}
+                </Typography.Text>
+              ))}
+              <Button
+                onClick={() => {
+                  setIsSearch(false);
+                  genericDispatch(
+                    dispatch,
+                    getPageApi({
+                      page: 1,
+                      limit: localStorage.getItem("pageSize") || 10,
+                    })
+                  );
+                  setCurrent(1);
+                  localStorage.setItem(
+                    location?.pathname?.split("/")?.pop(),
+                    1
+                  );
+                }}
+              >
+                Bỏ lọc
+              </Button>
+            </>
+          )}
           {drag ? (
             <Button
               onClick={() => {
@@ -312,6 +351,9 @@ const Pages = () => {
       <Table
         dragMode={drag}
         Api={getPageApi}
+        ApiSearch={searchPageApi}
+        isSearch={isSearch}
+        search={search}
         current={current}
         setCurrent={setCurrent}
         ApiPut={putOrderApi}
@@ -404,12 +446,7 @@ const Pages = () => {
             <Input className="mb-2" placeholder="Nhập tên trang" />
           </Form.Item>
 
-          <Form.Item
-            label="Nhóm"
-            className="mb-2"
-            name="group"
-            rules={[{ required: true, message: "Vui lòng nhập tên trang!" }]}
-          >
+          <Form.Item label="Nhóm" className="mb-2" name="group">
             <Select
               placeholder="Chọn nhóm"
               options={groupPages?.map((item) => ({

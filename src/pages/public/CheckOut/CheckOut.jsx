@@ -204,11 +204,7 @@ const Payment = () => {
 
   useEffect(() => {
     if (user?._id) {
-      formInfo.setFieldsValue({
-        name: user.name,
-        phone: user.phone,
-        email: user.email,
-      });
+      formInfo.setFieldsValue(user);
     }
   }, [user]);
 

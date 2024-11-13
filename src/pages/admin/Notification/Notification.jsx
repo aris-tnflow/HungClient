@@ -50,10 +50,6 @@ const Notification = () => {
         { label: "public", value: "public" },
         { label: "private", value: "private" },
       ],
-      ...FilterSelect("type", [
-        { value: "public", text: "public" },
-        { value: "private", text: "private" },
-      ]),
     },
     {
       title: "Ẩn/Hiện",
@@ -69,16 +65,11 @@ const Notification = () => {
         { label: "Hiển thị", value: true },
         { label: "Ẩn", value: false },
       ],
-      ...FilterSelect("type", [
-        { value: true, text: "Hiển thị" },
-        { value: false, text: "Ẩn" },
-      ]),
     },
     {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       width: "10%",
-      ...FilterDate({ dataIndex: "createdAt" }),
       render: (dayCreate) => FormatDay(dayCreate),
     },
     {
